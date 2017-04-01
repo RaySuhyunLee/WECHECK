@@ -1,0 +1,163 @@
+doctype html
+
+html(ng-app="MyApp")
+  head
+    title!= title
+    script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+    script(type="text/javascript", src="/static/papaparse.min.js")
+
+
+    script(type="text/javascript", src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+    script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js")
+    -each script in scripts
+      script(type="text/javascript", src=script)
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u", crossorigin="anonymous")
+    link(rel="stylesheet", href="/static/style.css")
+    link(rel="stylesheet", href="/static/animate.css")
+
+    script.
+      $(document).ready(function () {
+        $('#fact_checker').hide();
+        $('.button_group_fact_check').hide();
+
+        function startFactChecking() {
+          isFactChecking = true; 
+          $('#fact_checker').show();
+          $('.button_group_normal').hide();
+          $('.button_group_fact_check').show();
+        }
+
+        var video = $('#video').get(0);
+        $('.player_overlay').on('click', (e) => {
+          if (isPlaying == false) {
+            isPlaying = true;
+            video.play();
+            randomComment();
+            $('#play_button').hide();
+            setTimeout(startFactChecking, 10000);
+            updateCloud();
+          }
+          else if (isPlaying == true) {
+            isPlaying = false;
+            video.pause();
+            $('#play_button').show();
+          }
+        });
+
+        var cloudIndex = 0;
+        function updateCloud() {
+          if (cloudIndex > 4) cloudIndex = 0;
+          cloudIndex++;
+          $('#cloud_image').attr('src', "/static/c" + cloudIndex + '.jpg');
+          setTimeout(updateCloud, 10000);
+        }
+      });
+
+  body(ng-controller="CommentController")
+    .navbar.navbar-default
+      .navbar-header.col-md-2
+        h1 WECHECK
+      .navbar-collapse
+        .input-group.col-md-6
+          input.form-control(type="text")
+          span.input-group-btn
+            button.btn.btn-default(type="button")
+              span.glyphicon.glyphicon-search
+    .container-fluid.my_container
+      .row
+        .col-md-8
+          .block.col-md-12#video_container
+            .player_overlay
+              .play_button_container
+                div.play-button#play_button
+            video(width="100%")#video
+              source(src=videosrc, type="video/mp4")
+          .col-md-12
+            div(ng-if="best_comments.length > 0")#best_comment_container
+              .panel.panel-default.animated.fadeIn
+                .panel-body
+                  ul
+                    li(ng-repeat="comment in best_comments")
+                      .col-md-1
+                        div(ng-switch, on="comment.agree")
+                          div(ng-switch-when="1")
+                            img(src="/static/agree.png", width="50px", height="50px")
+                          div(ng-switch-when="-1")
+                            img(src="/static/disagree.png", width="50px", height="50px")
+                          div(ng-switch-default)
+                            img(src="/static/neutral.png", width="50px", height="50px")
+                      .col-md-11
+                        h5 {{comment.author}}
+                        p {{comment.content}}
+                        div
+                          span.glyphicon.glyphicon-thumbs-up
+                          p {{comment.like}}
+
+            div#comment_container
+              .panel.panel-default
+                .panel-body
+                  .row
+                    .col-md-12
+                      textarea#form_content(rows="3", cols="108", style="resize: none")
+                  .row
+                    .col-md-8
+                    .col-md-4
+                      .button_group_normal.pull-right
+                        button.btn.btn-primary#write_comment(type="button", ng-click="add(0)") 댓글 쓰기
+                      .button_group_fact_check.btn-group.pull-right(role="group")
+                        button.btn.btn-primary#write_comment(type="button", ng-click="add(0)") 댓글 쓰기
+                        button.btn.btn-default#write_agree(type="button", ng-click="add(1)") 찬
+                        button.btn.btn-default#write_disagree(type="button", ng-click="add(-1)") 반
+                  hr
+                  .block#comments
+                    ul
+                      li(ng-repeat="comment in comments")
+                        .col-md-1
+                          div(ng-switch, on="comment.agree")
+                            div(ng-switch-when="1")
+                              img(src="/static/agree.png", width="50px", height="50px")
+                            div(ng-switch-when="-1")
+                              img(src="/static/disagree.png", width="50px", height="50px")
+                            div(ng-switch-default)
+                              img(src="/static/neutral.png", width="50px", height="50px")
+                        .col-md-11
+                          h5 {{comment.author}}
+                          p {{comment.content}}
+                          div
+                            span(style="margin-right: 5px").glyphicon.glyphicon-thumbs-up
+                            span
+                              p {{comment.like}}
+
+        .col-md-4
+          .block.col-md-12
+            .panel.panel-default
+              .panel-heading
+                h3.panel-title 구름구름
+              .panel-body
+                img.animated.fadeIn#cloud_image(src="/static/c1.jpg", width="100%", style="animation-duration: 1.5s")
+          .block.col-md-12
+            .animated.bounceIn#fact_checker
+              h2 WECHECK
+              .bubble.fact_check
+                h3
+                  | 법인세 실효세율, 
+                  br
+                  | 10대 재벌 11%인가 재벌 16%인가?
+                  br
+                h4
+                  | 찬: 이재명의 10대 재벌 11%
+                  br
+                  | 반: 전원책의 재벌 16%
+                hr
+                div
+                  span(style="margin-right: 20px")
+                    .gauge--1
+                      .mask
+                        .semi-circle
+                        .semi-circle--mask
+                      div
+                        h4.pull-left 찬성
+                        h4.pull-right 반대
+                  span
+                    h4 찬: {{agrees}}명 ({{getPercentage(agrees)}}%)
+                    h4 반: {{disagrees}}명 ({{getPercentage(disagrees)}}%)

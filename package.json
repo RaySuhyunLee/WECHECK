@@ -1,0 +1,19 @@
+{
+  "name": "tanhaek",
+  "version": "0.0.1",
+  "description": "media hackaton",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "author": "RaySuhyunLee",
+  "license": "MIT",
+  "dependencies": {
+    "canvas": "^1.6.5",
+    "chart.js": "^2.5.0",
+    "d3-cloud": "^1.2.4",
+    "express": "^4.15.2",
+    "jade": "^1.11.0"
+  }
+}

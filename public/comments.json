@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "agree": 0,
+      "author": "이수현",
+      "content": "치킨 먹으러 갑시다"
+    },
+    {
+      "agree": 1,
+      "author": "이상협",
+      "content": "윙클 화이팅!"
+    },
+    {
+      "agree": 1,
+      "author": "이수현",
+      "content": "치킨 먹으러 갑시다"
+    },
+    {
+      "agree": -1,
+      "author": "이상협",
+      "content": "윙클 화이팅!"
+    }
+  ]
+}
