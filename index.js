@@ -10,6 +10,7 @@ app.get('/', (req, res) => {
   res.render('player', { 
     videosrc: '/static/video.mp4',
     scripts: ['/static/app.js'],
+    title: 'WECHECK'
   });
 });
 app.listen(port, () => {

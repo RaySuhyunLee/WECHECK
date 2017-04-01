@@ -49,16 +49,16 @@ html(ng-app="MyApp")
           if (cloudIndex > 4) cloudIndex = 0;
           cloudIndex++;
           $('#cloud_image').attr('src', "/static/c" + cloudIndex + '.jpg');
-          setTimeout(updateCloud, 10000);
+          setTimeout(updateCloud, 7500);
         }
       });
 
   body(ng-controller="CommentController")
     .navbar.navbar-default
       .navbar-header.col-md-2
-        h1 WECHECK
+        h1 WE:CHECK
       .navbar-collapse
-        .input-group.col-md-6
+        .input-group.col-md-6(style="padding-top: 20px")
           input.form-control(type="text")
           span.input-group-btn
             button.btn.btn-default(type="button")
@@ -132,12 +132,12 @@ html(ng-app="MyApp")
           .block.col-md-12
             .panel.panel-default
               .panel-heading
-                h3.panel-title 구름구름
+                h3.panel-title 댓글 실시간 분석
               .panel-body
                 img.animated.fadeIn#cloud_image(src="/static/c1.jpg", width="100%", style="animation-duration: 1.5s")
           .block.col-md-12
             .animated.bounceIn#fact_checker
-              h2 WECHECK
+              h2 WE CHECK!
               .bubble.fact_check
                 h3
                   | 법인세 실효세율, 
